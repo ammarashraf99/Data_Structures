@@ -26,22 +26,22 @@ LIST* list_init()
 	return mylist;
 }
 
-void delete_node(LIST** list, int position)
+void delete_node(LIST* list, int position)
 {
-	if( ((*list)->tail == NULL) && ((*list)->head == NULL) )	// list is empty
+	if( (list->tail == NULL) && (list->head == NULL) )	// list is empty
 		return;
 	struct ListNode* walk;
 	struct ListNode* late;
 	int k = 0;
-	walk = (*list)->head;
+	walk = list->head;
 	if(position == 0)
 	{
-		if( ((*list)->head) == ((*list)->tail) ){		// one element left
-			free((*list)->head);
-			(*list)->head = NULL;
-			(*list)->tail = NULL;
+		if( (list->head) == (list->tail) ){		// one element left
+			free(list->head);
+			list->head = NULL;
+			list->tail = NULL;
 		}else{
-			(*list)->head = (*list)->head->next;
+			list->head = list->head->next;
 			free(walk);
 		}
 	}
@@ -54,7 +54,7 @@ void delete_node(LIST** list, int position)
 		}
 		if(walk->next == NULL)
 		{
-			(*list)->tail = late;
+			list->tail = late;
 			late->next = NULL;
 			free(walk);
 		}else{
@@ -63,12 +63,12 @@ void delete_node(LIST** list, int position)
 		}
 	}
 
-	(*list)->size -= 1;
+	list->size -= 1;
 }
 
 
 
-void insert_node(LIST** list, int data, int position)
+void insert_node(LIST* list, int data, int position)
 {
 	int k = 0;
 	struct ListNode* newNode;	// The new node to insert
@@ -83,21 +83,21 @@ void insert_node(LIST** list, int data, int position)
 	}
 
 	newNode->data = data;	// assigning the data to the new node
-	if( ((*list)->tail == NULL) && ((*list)->head == NULL) ){		//list is empty
-		(*list)->tail = newNode;
-		(*list)->head = newNode;
+	if( (list->tail == NULL) && (list->head == NULL) ){		//list is empty
+		list->tail = newNode;
+		list->head = newNode;
 		newNode->next = NULL;
 	}else if(position == 0){		//inserting at the beginning
-		newNode->next = (*list)->head;
-		(*list)->head = newNode;
+		newNode->next = list->head;
+		list->head = newNode;
 	}
-	else if(position >= (*list)->size){		// inserting at the end of the list
-		(*list)->tail->next = newNode;
-		(*list)->tail = newNode;
-		(*list)->tail->next = NULL;
+	else if(position >= list->size){		// inserting at the end of the list
+		list->tail->next = newNode;
+		list->tail = newNode;
+		list->tail->next = NULL;
 	}
 	else {	//traverse the list until the position where we want to insert
-		walk = (*list)->head;		//starting the walk pointer at the beginning
+		walk = list->head;		//starting the walk pointer at the beginning
 		while( (walk!=NULL) && (k<position) ){
 			++k;
 			late = walk;
@@ -107,7 +107,7 @@ void insert_node(LIST** list, int data, int position)
 	newNode->next = walk;
 	}
 
-	(*list)->size += 1;
+	list->size += 1;
 }
 
 
@@ -125,24 +125,24 @@ void print_list(LIST* list)
 
 
 
-void insert_at_first(LIST** list, int data)
+void insert_at_first(LIST* list, int data)
 {
 	insert_node(list, data, 0);
 }
 
-void insert_at_end(LIST** list, int data)
+void insert_at_end(LIST* list, int data)
 {
-	insert_node(list, data, (*list)->size);
+	insert_node(list, data, list->size);
 
 }
 
-void delete_at_first(LIST** list)
+void delete_at_first(LIST* list)
 {
 	delete_node(list, 0);
 }
-void delete_at_end(LIST** list)
+void delete_at_end(LIST* list)
 {
-	delete_node(list, (*list)->size);
+	delete_node(list, list->size);
 }
 
 
@@ -151,14 +151,14 @@ int main()
 {
 	LIST* mylist = list_init();
 
-	insert_node(&mylist, 10, 0);
-	insert_node(&mylist, 20, 10);
-	insert_node(&mylist, 5, 0);
-	insert_node(&mylist, 30, 4);
-	insert_node(&mylist, 1, 0);
+	insert_node(mylist, 10, 0);
+	insert_node(mylist, 20, 10);
+	insert_node(mylist, 5, 0);
+	insert_node(mylist, 30, 4);
+	insert_node(mylist, 1, 0);
 
-	delete_at_first(&mylist);
-	delete_at_end(&mylist);
+	delete_at_first(mylist);
+	delete_at_end(mylist);
 
 
 	print_list(mylist);
